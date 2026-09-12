@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Shipyard | My Board</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f7fc">
+    <meta name="description" content="Shipyard. Plan. Track. Ship. A clear home for your tasks, ideas, and next big thing.">
+    <script>
+      // Apply the saved or system theme before the first paint to avoid a bright flash.
+      (() => {
+        let saved;
+        try { saved = localStorage.getItem('shipyard-theme'); } catch {}
+        const theme = saved === 'light' || saved === 'dark' ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#000000' : '#f4f7fc';
+      })();
+    </script>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  </head>
+  <body>
+    <app-root></app-root>
+  </body>
+</html>

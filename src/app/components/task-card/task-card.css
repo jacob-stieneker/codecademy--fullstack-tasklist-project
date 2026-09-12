@@ -1,0 +1,24 @@
+:host { display: flex; min-width: 0; }
+/* Flat category colors give the notes their identity without extra decoration. */
+.task-note { width: 100%; min-height: 235px; display: flex; flex-direction: column; padding: 20px 18px 12px; border-radius: 2px; position: relative; scroll-margin-block: 28px; }
+.note-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
+.category-label { font-size: .75rem; color: var(--note-muted); }
+h3 { font-size: 1.05rem; font-weight: 600; line-height: 1.5; margin: 0 0 10px; overflow-wrap: anywhere; }
+.note-description { margin: 0 0 20px; color: var(--note-muted); font-size: .8rem; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
+.note-details { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: .72rem; padding-bottom: 12px; }
+.priority, .due-date { display: inline-flex; align-items: center; gap: 5px; }
+.priority-high, .overdue { color: var(--danger); }
+.note-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; border-top: 1px solid var(--note-line); padding-top: 6px; }
+.note-status { color: var(--ink); border: 0; background: transparent; border-radius: 2px; padding: 6px 0; max-width: 100%; min-height: 36px; font-size: .75rem; cursor: pointer; }
+.note-status option { color: var(--ink); background: var(--surface); }
+.note-actions { display: flex; gap: 3px; }
+.note-actions a, .note-actions button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: transparent; color: var(--ink); border: 0; border-radius: 2px; min-height: 36px; padding: 5px 6px; text-decoration: none; font-size: .73rem; cursor: pointer; }
+.note-actions a:hover, .note-actions button:hover { background: var(--note-hover); text-decoration: underline; }
+.is-complete h3 { text-decoration: line-through; text-decoration-thickness: 1px; color: var(--note-muted); }
+
+.note-content { cursor: grab; }
+.note-content:active { cursor: grabbing; }
+.cdk-drag-disabled .note-content { cursor: default; }
+.completed-icon { color: var(--note-muted); }
+.cdk-drag-preview { box-sizing: border-box; opacity: .95; }
+.cdk-drag-placeholder { opacity: .25; }

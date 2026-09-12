@@ -1,0 +1,61 @@
+<section class="board-heading" aria-labelledby="board-title">
+  <h1 id="board-title" class="page-title" tabindex="-1">Task Board</h1>
+  <div class="board-heading-actions">
+    <label class="search-box"><app-icon name="search" /><span class="sr-only">Search tasks</span><input type="search" placeholder="Search your tasks..." [ngModel]="search()" (ngModelChange)="search.set($event)"></label>
+    <a class="button button-primary add-task" routerLink="/tasks/new"><app-icon name="plus" /> Add a task</a>
+  </div>
+</section>
+
+<section aria-label="Your task board">
+  <div class="board-options">
+    <div class="category-filters" role="group" aria-label="Filter by category">
+      <button type="button" [class.selected]="category() === 'all'" [attr.aria-pressed]="category() === 'all'" (click)="category.set('all')">Everything</button>
+      @for (item of categories; track item) {
+        <button type="button" [class.selected]="category() === item" [attr.aria-pressed]="category() === item" (click)="category.set(item)"><span class="category-dot" [class]="'category-dot category-' + item.toLowerCase()"></span>{{ item }}</button>
+      }
+    </div>
+    <label class="sort-control">Sort by <select [ngModel]="sort()" (ngModelChange)="sort.set($event)" aria-label="Sort tasks"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="priority">Priority</option><option value="due">Due date</option></select></label>
+  </div>
+
+  @if (store.error()) {
+    <div class="error-banner" role="alert"><span>{{ store.error() }}</span><button type="button" class="button button-secondary" (click)="store.connect()">Retry connection</button></div>
+  }
+  @if (actionError()) { <p class="error-banner" role="alert">{{ actionError() }}</p> }
+  @if (!store.connected() && !store.loading() && !store.error()) { <p class="error-banner" role="status">Reconnecting to your board. Changes will be available once Firebase is connected.</p> }
+
+  @if (store.loading()) {
+    <div class="loading-state" role="status"><span class="loading-circle"></span> Loading your board...</div>
+  } @else {
+    @if (!store.tasks().length && !store.error()) {
+      <div class="board-message"><h2>No tasks yet.</h2><p>Add your first task to get started.</p></div>
+    } @else if (!visibleTasks().length && !store.error()) {
+      <div class="board-message"><h2>No matching tasks.</h2><p>Try another search or clear your filters.</p><button type="button" class="button button-secondary" (click)="clearFilters()">Clear filters</button></div>
+    }
+    <p class="sr-only" role="status">Showing {{ visibleTasks().length }} of {{ store.tasks().length }} tasks</p>
+    <div class="board-scroll" cdkScrollable role="region" aria-label="Status columns" tabindex="0">
+      <div class="task-board" cdkDropListGroup>
+        @for (column of columns(); track column.status) {
+          <section class="status-column" [attr.aria-label]="column.status + ' column'">
+            <header class="column-heading"><h2>{{ column.status }}</h2><span>{{ column.tasks.length }}</span></header>
+            <div class="column-notes" cdkDropList [id]="'column-' + column.status" [cdkDropListData]="column.status" [cdkDropListSortingDisabled]="true" [cdkDropListDisabled]="!store.connected()" (cdkDropListDropped)="dropTask($event)">
+              @for (task of column.tasks; track task.id) {
+                <app-task-card [task]="task" [today]="today()" [busy]="pendingIds().has(task.id)" [disabled]="!store.connected()" (viewRequested)="openTask($event)" (statusChanged)="changeStatus($event)" (deleteRequested)="askToDelete($event)" />
+              } @empty {
+                <p class="column-empty">{{ search().trim() || category() !== 'all' ? 'No matching tasks' : 'Drop a note here' }}</p>
+              }
+            </div>
+          </section>
+        }
+      </div>
+    </div>
+  }
+
+</section>
+
+@if (deleting(); as task) {
+  <app-confirm-delete [task]="task" [busy]="deleteBusy()" [error]="deleteError()" (cancelled)="deleting.set(null)" (confirmed)="deleteTask()" />
+}
+
+@if (selectedId() && !store.loading()) {
+  <app-task-detail [task]="selectedTask()" (closed)="closeTask()" />
+}

@@ -1,0 +1,20 @@
+<dialog #dialog [class]="task() ? 'note-' + task()!.color : 'missing-task'" aria-labelledby="task-detail-title" (cancel)="close($event)">
+  <header>
+    <span class="category-label">{{ task()?.category ?? 'Task details' }}</span>
+    <button class="close-button" type="button" aria-label="Close task details" autofocus (click)="close()"><app-icon name="close" /></button>
+  </header>
+  @if (task(); as note) {
+    <h2 id="task-detail-title">{{ note.title }}</h2>
+    <p class="description">{{ note.description }}</p>
+    <dl>
+      <div><dt>Status</dt><dd>{{ note.status }}</dd></div>
+      <div><dt>Category</dt><dd>{{ note.category }}</dd></div>
+      <div><dt>Priority</dt><dd>{{ note.priority }}</dd></div>
+      @if (note.dueDate) { <div><dt>Due date</dt><dd>{{ note.dueDate | date:'MMM d, yyyy' }}</dd></div> }
+    </dl>
+    <footer><a class="button button-primary" [routerLink]="['/tasks', note.id, 'edit']"><app-icon name="edit" /> Edit task</a></footer>
+  } @else {
+    <h2 id="task-detail-title">Task unavailable</h2>
+    <p class="description">This task may have been deleted or is no longer available on this board.</p>
+  }
+</dialog>

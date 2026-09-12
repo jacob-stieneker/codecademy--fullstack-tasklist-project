@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.angular/
+out-tsc/
+.tools/
+.firebase/
+.firebase-data/
+*-debug.log
+*-debug.*.log
+playwright-report/
+test-results/
+.DS_Store
+.env*
+!.env.example

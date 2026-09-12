@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Each anonymous Firebase user owns a private board. Knowing an ID is not permission.
+    match /users/{userId}/tasks/{taskId} {
+      function isOwner() {
+        return request.auth != null && request.auth.uid == userId;
+      }
+      function validTask() {
+        let task = request.resource.data;
+        return task.keys().hasAll(['title', 'description', 'status', 'completed', 'category', 'color', 'priority', 'dueDate', 'createdAt'])
+          && task.keys().hasOnly(['title', 'description', 'status', 'completed', 'category', 'color', 'priority', 'dueDate', 'createdAt'])
+          && task.title is string && task.title.size() <= 100 && task.title.matches('.*[^\\s].*')
+          && task.description is string && task.description.size() <= 2000
+          && task.completed is bool
+          && task.status in ['Planning', 'Tracking', 'Shipped']
+          && task.completed == (task.status == 'Shipped')
+          && task.category in ['Work', 'Personal', 'Learning']
+          && ((task.category == 'Work' && task.color == 'butter')
+            || (task.category == 'Personal' && task.color == 'sky')
+            || (task.category == 'Learning' && task.color == 'rose'))
+          && task.priority in ['Low', 'Medium', 'High']
+          && task.dueDate is string
+          && (task.dueDate == '' || task.dueDate.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$'))
+          && task.createdAt is timestamp;
+      }
+      allow read, delete: if isOwner();
+      allow create: if isOwner() && validTask() && request.resource.data.createdAt == request.time;
+      allow update: if isOwner() && validTask()
+        && request.resource.data.createdAt == resource.data.createdAt;
+    }
+  }
+}

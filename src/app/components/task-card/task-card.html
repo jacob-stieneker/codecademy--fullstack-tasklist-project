@@ -1,0 +1,26 @@
+<article cdkDrag [cdkDragData]="task()" [cdkDragDisabled]="busy() || disabled()" [cdkDragStartDelay]="{ mouse: 0, touch: 180 }" [id]="'task-' + task().id" tabindex="0" (dblclick)="openDetails($event)" (keydown.enter)="openDetails($event)" aria-description="Double-click or press Enter to view task details." [class]="'task-note note-' + task().color" [class.is-complete]="task().status === 'Shipped'" [attr.aria-label]="task().title" [attr.aria-busy]="busy()">
+  <div cdkDragHandle class="note-content" title="Drag to another status column">
+    <div class="note-top"><span class="category-label">{{ task().category }}</span>@if (task().status === 'Shipped') { <app-icon class="completed-icon" name="check" /> }</div>
+    <h3>{{ task().title }}</h3>
+    <p class="note-description">{{ task().description }}</p>
+  </div>
+  <div class="note-details">
+    <span class="priority" [class.priority-high]="task().priority === 'High'">{{ task().priority }} priority</span>
+    @if (task().dueDate) {
+      <span class="due-date" [class.overdue]="task().status !== 'Shipped' && task().dueDate < today()">
+        <app-icon name="calendar" />
+        @if (task().status !== 'Shipped' && task().dueDate < today()) { <span>Overdue:</span> }
+        {{ task().dueDate | date:'MMM d' }}
+      </span>
+    }
+  </div>
+  <footer class="note-footer">
+    <select class="note-status" [disabled]="busy() || disabled()" (change)="changeStatus($event)" [attr.aria-label]="'Status: ' + task().title">
+      @for (status of statuses; track status) { <option [value]="status" [selected]="status === task().status">{{ status }}</option> }
+    </select>
+    <div class="note-actions">
+      <a [routerLink]="['/tasks', task().id, 'edit']" [attr.aria-label]="'Edit ' + task().title"><app-icon name="edit" /> Edit</a>
+      <button type="button" [disabled]="busy() || disabled()" (click)="deleteRequested.emit(task())" [attr.aria-label]="'Delete ' + task().title"><app-icon name="trash" /> Delete</button>
+    </div>
+  </footer>
+</article>

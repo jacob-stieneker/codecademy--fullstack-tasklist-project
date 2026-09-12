@@ -1,0 +1,114 @@
+/* Shared design tokens keep light and dark mode consistent across every component. */
+:root {
+  color-scheme: light;
+  --canvas: #f4f7fc;
+  --surface: #ffffff;
+  --surface-raised: #f8faff;
+  --sidebar: #eef3fa;
+  --ink: #142b47;
+  --muted: #526781;
+  --accent: #1263be;
+  --accent-hover: #0b4f9c;
+  --accent-soft: #e3efff;
+  --on-accent: #ffffff;
+  --line: #d9e3f0;
+  --control-line: #8295ad;
+  --hover: #eaf1fa;
+  --success: #167267;
+  --success-soft: #e0f3ef;
+  --warning: #8b5d16;
+  --warning-soft: #fff0d9;
+  --danger: #ad3e39;
+  --danger-soft: #fff0ed;
+  --danger-line: #e7b3ac;
+  --danger-button: #b13e36;
+  --danger-hover: #922e28;
+  --shadow: 0 4px 20px #183c6a07;
+  --note-line: #16365721;
+  --note-hover: #ffffff60;
+  --note-muted: #3c5670;
+  --note-sand: #fff0ac;
+  --note-seafoam: #e1f3f0;
+  --note-coral: #ffddea;
+  --note-iris: #eceaff;
+  --note-sea: #d7eaff;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--ink);
+  background: var(--canvas);
+  font-synthesis: none;
+}
+
+/* True black saves bright pixels; subtly raised surfaces keep controls easy to distinguish. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --canvas: #000000;
+  --surface: #080d14;
+  --surface-raised: #0d1520;
+  --sidebar: #04080e;
+  --ink: #e5efff;
+  --muted: #9aaec8;
+  --accent: #78bbff;
+  --accent-hover: #a2d0ff;
+  --accent-soft: #10233b;
+  --on-accent: #06172b;
+  --line: #1d2a3c;
+  --control-line: #677d99;
+  --hover: #122033;
+  --success: #73d4c2;
+  --success-soft: #102824;
+  --warning: #efc47a;
+  --warning-soft: #2a2110;
+  --danger: #ffa298;
+  --danger-soft: #2b1518;
+  --danger-line: #6b3737;
+  --danger-button: #ad3732;
+  --danger-hover: #c94b43;
+  --shadow: none;
+  --note-line: #b6d3ff26;
+  --note-hover: #b6d3ff0d;
+  --note-muted: #acc0d7;
+  --note-sand: #302810;
+  --note-seafoam: #0c211f;
+  --note-coral: #301925;
+  --note-iris: #1b1830;
+  --note-sea: #10243c;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--canvas); }
+button, input, select, textarea { font: inherit; }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+button:disabled { cursor: not-allowed; opacity: .6; }
+button, a { touch-action: manipulation; }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+h1, h2, h3, p { overflow-wrap: anywhere; }
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 44px; padding: 12px 19px; border: 1px solid transparent; border-radius: 3px; font-size: .82rem; font-weight: 600; text-decoration: none; cursor: pointer; line-height: 1.4; }
+.button-primary { color: var(--on-accent); background: var(--accent); }
+.button-primary:hover { background: var(--accent-hover); }
+.button-secondary { color: var(--ink); background: var(--surface); border-color: var(--line); }
+.button-secondary:hover { background: var(--hover); }
+.button-danger { color: #ffffff; background: var(--danger-button); }
+.button-danger:hover { background: var(--danger-hover); }
+.eyebrow { font-size: .68rem; font-weight: 650; letter-spacing: .14em; color: var(--accent); margin: 0 0 15px; text-transform: uppercase; }
+.page-title { font-weight: 600; font-size: clamp(1.6rem, 2.6vw, 2rem); line-height: 1.3; margin: 0; }
+.page-subtitle { color: var(--muted); font-size: .9rem; line-height: 1.8; margin: 14px 0 0; }
+/* Category colors use the original CSS IDs; legacy styles remain available for older records. */
+.note-butter { background: var(--note-sand); --note-accent: var(--warning); }
+.note-sage { background: var(--note-seafoam); --note-accent: var(--success); }
+.note-rose { background: var(--note-coral); --note-accent: var(--danger); }
+.note-lavender { background: var(--note-iris); --note-accent: #6658bd; }
+.note-sky { background: var(--note-sea); --note-accent: var(--accent); }
+:root[data-theme='dark'] .note-lavender { --note-accent: #b8aaff; }
+.error-banner { padding: 17px 20px; background: var(--danger-soft); border: 1px solid var(--danger-line); border-radius: 10px; color: var(--danger); font-size: .85rem; line-height: 1.6; margin: 20px 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.field-error { color: var(--danger); font-size: .8rem; line-height: 1.6; margin: 7px 0 0; }
+.skip-link { position: fixed; left: 16px; top: -80px; z-index: 100; padding: 12px 20px; color: var(--ink); background: var(--surface); border: 2px solid var(--accent); border-radius: 5px; }
+.skip-link:not(:focus) { clip-path: inset(50%); }
+.skip-link:focus { top: 16px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* One shared mapping keeps sidebar dots and board categories consistent. */
+.category-work { background: #b48a1d; }
+.category-personal { background: var(--accent); }
+.category-learning { background: #cd649b; }

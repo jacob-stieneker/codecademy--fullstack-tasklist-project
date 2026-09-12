@@ -1,0 +1,52 @@
+<a routerLink="/tasks" class="back-link"><app-icon name="arrow" /> Back to my board</a>
+<h1 class="page-title">{{ editing() ? 'Edit task' : 'Add a task' }}</h1>
+
+@if (store.error()) { <div class="error-banner" role="alert">{{ store.error() }}<button type="button" class="button button-secondary" (click)="store.connect()">Retry connection</button></div> }
+
+@if (editing() && store.loading()) {
+  <p class="form-loading" role="status">Finding your task...</p>
+} @else if (editing() && !task() && !store.error()) {
+  <div class="missing-task"><app-icon name="note" /><h2>This note is no longer here.</h2><p>It may have been deleted or belong to a different board.</p><a routerLink="/tasks" class="button button-primary">Back to my board</a></div>
+} @else {
+  <div class="form-layout">
+    <form [formGroup]="form" (ngSubmit)="save()" novalidate class="task-form" [attr.aria-busy]="saving()">
+      <fieldset [disabled]="saving()">
+        <legend class="sr-only">Task details</legend>
+        <div class="field-heading"><label for="task-title">What's on your mind? <span class="required-label">Required</span></label><span>{{ preview().title.length }}/100</span></div>
+        <input id="task-title" type="text" formControlName="title" placeholder="What needs to get done?" maxlength="100" required [attr.aria-invalid]="form.controls.title.touched && form.controls.title.invalid" aria-describedby="title-error">
+        <div id="title-error">@if (form.controls.title.touched && form.controls.title.invalid) { <p class="field-error">Add a title with 1 to 100 characters. Spaces alone don't count.</p> }</div>
+
+        <label for="task-description" class="field-label">A few more details <span>Optional</span></label>
+        <textarea id="task-description" formControlName="description" placeholder="A reminder, a next step, or anything worth remembering..." rows="4" maxlength="2000" aria-describedby="description-hint"></textarea>
+        <p id="description-hint" class="field-hint">Keep it simple. Up to 2,000 characters.</p>
+
+        <div class="field-row">
+          <div><label for="task-category" class="field-label">Category</label><select id="task-category" formControlName="category">@for (category of categories; track category) { <option [value]="category">{{ category }}</option> }</select></div>
+          <div><label for="task-priority" class="field-label">Priority</label><select id="task-priority" formControlName="priority">@for (priority of priorities; track priority) { <option [value]="priority">{{ priority }}</option> }</select></div>
+        </div>
+
+        <label for="task-date" class="field-label">A date to aim for <span>Optional</span></label>
+        <input id="task-date" type="date" formControlName="dueDate" max="9999-12-31" aria-describedby="date-error">
+        <div id="date-error">@if (form.controls.dueDate.touched && form.controls.dueDate.invalid) { <p class="field-error">Choose a valid calendar date.</p> }</div>
+
+        <label for="task-status" class="field-label">Status</label>
+        <select id="task-status" formControlName="status">@for (status of statuses; track status) { <option [value]="status">{{ status }}</option> }</select>
+
+      </fieldset>
+
+      @if (saveError()) { <p class="error-banner" role="alert">{{ saveError() }}</p> }
+      @if (!store.connected() && !store.error()) { <p class="field-hint" role="status">Connecting to Firebase. You can write your task while we reconnect.</p> }
+      <div class="form-actions"><a routerLink="/tasks" class="button button-secondary" [attr.aria-disabled]="saving()" (click)="saving() && $event.preventDefault()">Cancel</a><button type="submit" class="button button-primary" [disabled]="saving() || !store.connected() || (editing() && !task())"><app-icon [name]="editing() ? 'check' : 'plus'" />{{ saving() ? 'Saving to your board...' : (editing() ? 'Save changes' : 'Add to my board') }}</button></div>
+    </form>
+
+    <aside class="preview-panel" aria-label="Live note preview">
+      <p class="preview-label">Preview</p>
+      <div [class]="'preview-note note-' + categoryColors[preview().category]">
+        <span class="preview-category">{{ preview().category }}</span>
+        <h2>{{ preview().title.trim() || 'Task title' }}</h2>
+        <p>{{ preview().description.trim() || 'Your task details will appear here.' }}</p>
+        <span class="preview-priority">{{ preview().priority }} priority</span>
+      </div>
+    </aside>
+  </div>
+}
