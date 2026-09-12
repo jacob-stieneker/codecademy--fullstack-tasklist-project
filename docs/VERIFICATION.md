@@ -10,6 +10,19 @@ Footer follow-up: added the centered harbor message. Both light/dark responsive 
 
 Note-header follow-up: removed the grip icon while retaining the Shipped checkmark. Mouse/touch drag tests, both responsive/accessibility scenarios, and the optimized build passed.
 
+## Live deployment verification
+
+Published September 12, 2026 at [Shipyard](https://shipyard-jacob-stieneker.web.app), with source at [GitHub](https://github.com/jacob-stieneker/shipyard-project). The owner-controlled Firebase project uses Spark without linked billing, anonymous Authentication, the default free-tier Firestore Native database in `nam5`, and Firebase Hosting. Owner-only rules and indexes were deployed before Hosting.
+
+- The final `npm run build:cloud` passed with no warnings or errors, and Hosting deployment succeeded.
+- In the public app, created a task, reloaded to confirm persistence, dragged Planning to Tracking, and reloaded its direct edit URL to verify the persisted status and SPA routing.
+- Edited the title/category/status, confirmed the Learning note in Shipped and updated sidebar counts, and opened its expanded view from the sidebar.
+- Opened and closed Help; switched Light/Dark; deleted the disposable test note and confirmed the empty board after reload. Restored Dark mode and left the app open with Connected to Firebase. The final browser console had no warnings or errors.
+- Separate temporary Firebase users verified live owner create/read/update/delete, cross-user read/write rejection, unauthenticated read rejection, blank-title rejection, and server-side deletion readback. Test documents and temporary SDK accounts were removed.
+- The first browser connection failed while newly enabled Authentication was becoming available; a fresh load connected successfully. An initial SDK permission-read test returned an offline error, so direct Firestore REST responses were used to confirm HTTP 403 for denied requests and HTTP 200 for the owner.
+
+This cloud smoke check supplements the full emulator suite below. Local development and automated test defaults still use emulators; local notes were not migrated into the live project.
+
 ## Automated results
 
 | Check | Result |
@@ -69,10 +82,10 @@ Screenshots captured from tasks created through the application:
 
 ## Remaining limitations
 
-- **Local environment:** no hosted Firebase project, public deployment, domain, or production account is configured. Local mode is fully functional with the emulators running. `npm run build` deliberately targets emulators; use the documented cloud setup and guarded cloud build when a hosted submission is needed.
+- **Build selection:** `npm run build` deliberately targets emulators. For the hosted app, use `npm run build:cloud` immediately before deployment; both commands share an output directory. Spark usage quotas apply. No custom domain is configured.
 - **Anonymous identity:** normal refreshes preserve access, but a new browser/device or clearing site data creates a different board. There is no sign-in/account-recovery feature. Emulators export on graceful exit, not after every keystroke; forced termination can lose changes since the last export.
 - **Dependency advisories:** `npm audit fix` applied compatible changes, but the final audit still reports 11 inherited findings (9 moderate, 1 high, 1 critical), rooted in Firebase CLI dependencies such as tar, uuid, csv-parse, stream-json, qs, and OpenTelemetry. AngularFire 20 requires Firebase CLI 14 as a peer, so npm also includes that tooling in `--omit=dev` audits. The application imports AngularFire app/auth/firestore modules, not the Firebase CLI. Do not treat this as a clean dependency audit. Avoid untrusted archive/import inputs to the tooling and reassess the compatible AngularFire/Firebase CLI combination before production maintenance. The suggested force-fix downgrades Firebase CLI to 10.1.1 and violates AngularFire's peer requirement, so it was not applied. No unverified major overrides were introduced.
-- **Test scope:** functional and automated accessibility testing used Chromium. Touch gestures used Chromium mobile emulation, not a physical device. Desktop and mobile screenshots were reviewed. Safari, Firefox, physical devices, and a full assistive-technology audit were not tested. No hosted Firebase environment was available or required for this local build.
+- **Test scope:** functional and automated accessibility testing used Chromium. Touch gestures used Chromium mobile emulation, not a physical device. Desktop and mobile screenshots were reviewed. Safari, Firefox, physical devices, and a full assistive-technology audit were not tested. Hosted verification covered the smoke checks above; the full automated suite remains emulator-based.
 - **Scale:** each private board reads its task collection and filters/sorts in memory. This keeps the assignment understandable; pagination/search infrastructure would be a separate enhancement for large datasets.
 
 ## Reproduce

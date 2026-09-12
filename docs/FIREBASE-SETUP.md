@@ -2,7 +2,7 @@
 
 ## Local mode, already configured
 
-The user's selected environment is the Firebase Emulator Suite. The default config uses project ID `demo-pinboard`, Auth at `127.0.0.1:9099`, and Firestore at `127.0.0.1:8080`. The emulator project ID and the browser config must match. The `demo-` prefix prevents accidental use of real cloud resources for services that are not emulated.
+Local development uses the Firebase Emulator Suite. The default config uses project ID `demo-pinboard`, Auth at `127.0.0.1:9099`, and Firestore at `127.0.0.1:8080`. The emulator project ID and the browser config must match. The `demo-` prefix prevents accidental use of real cloud resources for services that are not emulated.
 
 `npm run emulators` handles Auth/Firestore startup and database export/import. `npm start` starts Angular. The emulator UI is at port 4000. The hub uses 4400, logging uses 4500, and Firestore's UI websocket uses 9150. All are bound to loopback; this is a local development setup, not a remotely hosted demo.
 
@@ -24,11 +24,26 @@ Status is Planning, Tracking, or Shipped. `completed` is true only for Shipped. 
 
 Firestore may show the parent user document as nonexistent because only its `tasks` subcollection contains data. That is normal. Browser authentication identity is stored by the Firebase SDK; task content is stored in Firestore.
 
-## Optional connection to hosted Firebase
+## Live Firebase deployment
 
-The Google Cloud project `shipyard-jacob-stieneker` (Shipyard) has been created in the owner's account. Firebase activation is pending acceptance of Firebase terms; Authentication, Firestore, and Hosting have not been provisioned or deployed. No billing account was linked. The app remains connected to local emulators until activation and deployment finish. Before publishing, determine ownership. For a customer project, the customer must own Firebase, hosting, domains, billing, and related infrastructure. For your own project, use your own chosen account. Do not share private credentials in chat or source control.
+Shipyard is deployed at **https://shipyard-jacob-stieneker.web.app** in the owner's Firebase project, `shipyard-jacob-stieneker`. It uses the no-cost Spark plan, without a linked billing account. Anonymous Authentication is enabled. The default Firestore Native database uses the free tier in `nam5`; the repository's owner-only rules and indexes are deployed. Firebase Hosting serves the cloud build over HTTPS.
 
-When ready:
+The public web configuration is committed in `src/environments/environment.cloud.ts`. It identifies the Firebase web app and is not a private credential. Firestore rules enforce ownership and validate task fields. Do not put service-account keys, CLI tokens, or other private credentials in source control.
+
+To publish an update from an account authorized for this project:
+
+```bash
+npx firebase login
+npx firebase deploy --only firestore:rules,firestore:indexes --project shipyard-jacob-stieneker
+npm run build:cloud
+npx firebase deploy --only hosting --project shipyard-jacob-stieneker
+```
+
+Build immediately before deploying Hosting: both local and cloud builds write to `dist/shipyard/browser`. A later `npm run build` or `npm run test:build` replaces that output with the emulator configuration. Keep `.firebaserc` set to the demo project and explicitly select the live project in deployment commands.
+
+## Connecting a different hosted project
+
+Before publishing elsewhere, determine ownership. A customer must own their production infrastructure; for your own app, use your chosen account. Then:
 
 1. In the intended owner's Firebase account, create or select a project and register a Web app.
 2. Create the default Cloud Firestore database in the intended region.
@@ -44,7 +59,7 @@ npm run build:cloud
 npx firebase deploy --only hosting --project YOUR_PROJECT_ID
 ```
 
-These commands are documentation, not actions performed during this build. Leave `.firebaserc` set to the demo project to keep local testing safe. The cloud build refuses the provided placeholders. Do not upload the normal emulator-targeting `npm run build` output as a public site.
+Replace `YOUR_PROJECT_ID` with the intended destination. Leave `.firebaserc` set to the demo project to keep local testing safe. The cloud build refuses placeholder values. Do not upload the normal emulator-targeting `npm run build` output as a public site.
 
 Firebase Hosting's SPA rewrite is included so directly opening `/tasks/<id>/edit` loads Angular. No server-side rendering or paid application server is required by this source project. Review your selected cloud project's usage and account requirements before publishing.
 

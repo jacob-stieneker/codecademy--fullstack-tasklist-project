@@ -79,7 +79,11 @@ export class TaskService {
           this.error.set('We could not read your board. Check the Firebase connection and security rules, then retry.');
         },
       ));
-    } catch {
+    } catch (error) {
+      // Log only the error code for troubleshooting, never account credentials or task data.
+      if (error && typeof error === 'object' && 'code' in error) {
+        console.warn('Firebase connection failed:', error.code);
+      }
       this.loading.set(false);
       this.error.set('We could not open your private board. Check that Firebase Authentication is running, then retry.');
     }

@@ -6,6 +6,8 @@ A complete sticky-note task board built with Angular, AngularFire, Firebase Auth
 
 Source repository: [jacob-stieneker/shipyard-project](https://github.com/jacob-stieneker/shipyard-project).
 
+Live app: [Shipyard](https://shipyard-jacob-stieneker.web.app). Hosted in the owner's Firebase project on the no-cost Spark plan, with live anonymous Authentication and private Firestore boards. No billing account is linked. Local emulator notes remain separate from the live board.
+
 ## Start the project
 
 Prerequisites: Node.js 22.12+ or Node.js 24, npm, and Java 21. On the original development machine, an ignored project-local Java runtime is already installed in `.tools/java`. On another machine, install Java 21 and make `java -version` work in your terminal. No Firebase account, billing, or secrets are needed for local development.
@@ -114,10 +116,10 @@ The browser suite starts Angular automatically if it is not running. `npm test` 
 
 The production-optimized local build is written to `dist/shipyard/browser`. It still targets the local emulators. For cloud configuration and the separate `npm run build:cloud` command, see [Firebase setup](docs/FIREBASE-SETUP.md).
 
-See [verification and known limitations](docs/VERIFICATION.md), including upstream Firebase CLI dependency advisories. The source is published on GitHub. Public Firebase deployment is pending account activation; the app currently runs with local emulators.
+See [verification and known limitations](docs/VERIFICATION.md), including upstream Firebase CLI dependency advisories. The public app uses live Firebase; local development and automated browser tests continue to use emulators.
 
 ## Assignment submission
 
-Before the September 17, 2026 class deadline, review the implementation so you can explain the template, component, service, and database flow. Test your demo with the exact browser and environment you will use. If the instructor requires hosted Firebase rather than the local Emulator Suite, connect your Firebase project using the setup guide.
+Before the September 17, 2026 class deadline, review the implementation so you can explain the template, component, service, and database flow. Test your demo with the exact browser and environment you will use. The live app above is available for a hosted demonstration; the setup guide documents future deployments.
 
 The handout also asks for a LinkedIn project post tagging Codecademy, using `#CodecademyFullStackBootcamp`, and sharing the post link in Discord's `#project-showcase`. Those account actions remain yours to complete, following any updated instructor instructions.

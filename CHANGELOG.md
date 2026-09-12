@@ -3,7 +3,9 @@
 ## Unreleased
 
 - Published the source to the public `jacob-stieneker/shipyard-project` GitHub repository.
-- Prepared the owner-controlled Shipyard cloud project; public Firebase deployment awaits account activation.
+- Deployed the owner-controlled `shipyard-jacob-stieneker` Firebase project on Spark without billing: anonymous Authentication, private Firestore rules/indexes, and HTTPS Hosting.
+- Added the public cloud configuration, live app link, and redeployment instructions while preserving emulator defaults.
+- Added credential-free connection error-code diagnostics for troubleshooting.
 
 - Removed the redundant grip icon from notes, preserving dragging and the Shipped checkmark.
 - Added the centered footer quotation '"Good ideas deserve to leave the harbor." - Jacob Stieneker' in small, theme-aware muted text.

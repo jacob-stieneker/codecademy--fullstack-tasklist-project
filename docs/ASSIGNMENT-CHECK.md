@@ -76,7 +76,7 @@ No application behavior or styling changes were needed for the original assignme
 
 ## Submission boundaries
 
-- Local Firebase emulators were explicitly selected for development. No hosted Firebase project or public deployment is configured. The handout's cloud-console checkpoint was exercised through direct local Firestore readback instead. Confirm local demos are acceptable before submission, or connect the intended owner's Firebase project using [Firebase setup](FIREBASE-SETUP.md).
+- Local Firebase emulators remain the development/test default. The app is also published at [Shipyard](https://shipyard-jacob-stieneker.web.app) in the owner's Firebase project, with live Authentication, Firestore, rules, and Hosting on Spark without billing. Live CRUD and server-side access controls passed the deployment smoke checks. See [Firebase setup](FIREBASE-SETUP.md) for the two environments and deployment commands.
 - Normal refresh preserves the anonymous board. A different browser/device or cleared site data creates a separate identity. Emulators must be running; graceful shutdown exports their data.
 - The handout's deadline is September 17, 2026 at the beginning of class. It also asks for a screenshot/demo and LinkedIn/Discord sharing. Screenshots are available; posting, tagging, submitting the link, explaining the implementation, and following updated instructor guidance remain the student's actions. No social messages were sent.
 - Browser checks used Chromium. They do not establish Safari/Firefox behavior or constitute a complete assistive-technology audit. Existing tooling dependency advisories remain documented in [verification notes](VERIFICATION.md); dependency remediation was not part of this assignment check.
