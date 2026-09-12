@@ -114,7 +114,7 @@ The browser suite starts Angular automatically if it is not running. `npm test` 
 
 The production-optimized local build is written to `dist/shipyard/browser`. It still targets the local emulators. For cloud configuration and the separate `npm run build:cloud` command, see [Firebase setup](docs/FIREBASE-SETUP.md).
 
-See [verification and known limitations](docs/VERIFICATION.md), including upstream Firebase CLI dependency advisories. No production infrastructure has been created or deployed.
+See [verification and known limitations](docs/VERIFICATION.md), including upstream Firebase CLI dependency advisories. The source is published on GitHub. Public Firebase deployment is pending account activation; the app currently runs with local emulators.
 
 ## Assignment submission
 

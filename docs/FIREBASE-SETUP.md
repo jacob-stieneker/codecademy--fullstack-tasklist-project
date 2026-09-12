@@ -26,7 +26,7 @@ Firestore may show the parent user document as nonexistent because only its `tas
 
 ## Optional connection to hosted Firebase
 
-No cloud project is connected and no production resources have been created. Before publishing, determine ownership. For a customer project, the customer must own Firebase, hosting, domains, billing, and related infrastructure. For your own project, use your own chosen account. Do not share private credentials in chat or source control.
+The Google Cloud project `shipyard-jacob-stieneker` (Shipyard) has been created in the owner's account. Firebase activation is pending acceptance of Firebase terms; Authentication, Firestore, and Hosting have not been provisioned or deployed. No billing account was linked. The app remains connected to local emulators until activation and deployment finish. Before publishing, determine ownership. For a customer project, the customer must own Firebase, hosting, domains, billing, and related infrastructure. For your own project, use your own chosen account. Do not share private credentials in chat or source control.
 
 When ready:
 

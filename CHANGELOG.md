@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Published the source to the public `jacob-stieneker/shipyard-project` GitHub repository.
+- Prepared the owner-controlled Shipyard cloud project; public Firebase deployment awaits account activation.
+
 - Removed the redundant grip icon from notes, preserving dragging and the Shipped checkmark.
 - Added the centered footer quotation '"Good ideas deserve to leave the harbor." - Jacob Stieneker' in small, theme-aware muted text.
 - Added expanded category-colored task views from sidebar links, note double-clicks, and Enter, with live updates and an Edit action.
