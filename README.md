@@ -4,11 +4,15 @@
 
 A complete sticky-note task board built with Angular, AngularFire, Firebase Authentication, Cloud Firestore, and custom CSS. Built for the [Tasklist Board assignment](https://docs.google.com/document/d/1ImDWw5FwpNDYZmGsJuGsHX1i9iRftOK5UqO1zp7ocoY/edit).
 
+Source repository: [jacob-stieneker/shipyard-project](https://github.com/jacob-stieneker/shipyard-project).
+
 ## Start the project
 
 Prerequisites: Node.js 22.12+ or Node.js 24, npm, and Java 21. On the original development machine, an ignored project-local Java runtime is already installed in `.tools/java`. On another machine, install Java 21 and make `java -version` work in your terminal. No Firebase account, billing, or secrets are needed for local development.
 
 ```bash
+git clone https://github.com/jacob-stieneker/shipyard-project.git
+cd shipyard-project
 npm ci
 ```
 
@@ -75,7 +79,9 @@ src/app/
   services/theme.service.ts      System theme, saved preference, and theme dropdown
   components/icon.ts            Shared local SVG icons
   components/task-card/         A sticky note with input()/output()
-  components/confirm-delete.ts   Accessible native dialog
+  components/confirm-delete.ts   Accessible deletion dialog
+  components/task-detail/        Expanded live task view
+  components/board-help.ts       Concise Help guide
   pages/task-list/               Board, search, filters, sorting
   pages/task-form/               Shared create and edit form
   pages/not-found.ts             Unknown-route page
@@ -104,7 +110,7 @@ See the [assignment sanity check](docs/ASSIGNMENT-CHECK.md) for a requirement-by
 
 The browser suite starts Angular automatically if it is not running. `npm test` runs Chromium UI/accessibility tests followed by Firestore rule tests. The tests use isolated anonymous browser users, with a separate project for security-rule tests. They do not clear the working board. Expected `PERMISSION_DENIED` output in rule tests means invalid requests were successfully rejected.
 
-`npm run test:build` builds the app and runs the same eleven browser scenarios against compiled files on a temporary local server at port 4300. It does not publish the app. Use `npm run build` when you only want the optimized output.
+`npm run test:build` builds the app and runs the same fourteen browser scenarios against compiled files on a temporary local server at port 4300. It does not publish the app. Use `npm run build` when you only want the optimized output.
 
 The production-optimized local build is written to `dist/shipyard/browser`. It still targets the local emulators. For cloud configuration and the separate `npm run build:cloud` command, see [Firebase setup](docs/FIREBASE-SETUP.md).
 
