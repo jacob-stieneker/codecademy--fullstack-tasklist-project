@@ -32,8 +32,7 @@ Start Angular in another terminal:
 npm start
 ```
 
-Open [http://127.0.0.1:4200](http://127.0.0.1:4200). The [Firebase Emulator UI](http://127.0.0.1:4000) lets you inspect local data. Initial setup requires internet access; no Firebase account or billing is needed for local development.
-
+Open [http://127.0.0.1:4200](http://127.0.0.1:4200). The [Firebase Emulator UI](http://127.0.0.1:4000) lets you inspect local data.
 Stop the emulators with Ctrl+C and wait for the export to finish. The next launch restores the saved data. Use the same browser and URL to return to your board. Local tasks are separate from the public app's tasks.
 
 ## Build and deploy
