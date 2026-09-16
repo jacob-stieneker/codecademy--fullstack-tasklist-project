@@ -243,7 +243,7 @@ test('legacy completed tasks adapt to Shipped and category colors, then save the
   expect(fields.color.stringValue).toBe('sky');
 });
 
-test('assignment checklist: ten notes match Firestore, isolated edits, first and middle deletion', async ({ page, request }) => {
+test('ten notes match Firestore, isolated edits, first and middle deletion', async ({ page, request }) => {
   // Psudo code //
   // First create a fresh private board through the real app.
   // Then compare the displayed notes with that user's Firestore documents.
