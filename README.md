@@ -4,6 +4,8 @@
 
 Shipyard is a sticky-note task board built with Angular, AngularFire, Firebase Authentication, Cloud Firestore, and custom CSS. Create, edit, and delete tasks; drag notes between Planning, Tracking, and Shipped; organize them by category; and switch between light and dark mode.
 
+The board fills the page, with the logo, Help, and theme selector in the top bar. Double-click a note, or focus it and press Enter, to view its details.
+
 ## Use on the web
 
 Open [Shipyard](https://shipyard-jacob-stieneker.web.app). No installation is needed.

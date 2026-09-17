@@ -11,10 +11,10 @@ import { Icon } from './icon';
       <dl>
         <div><dt>Add a task</dt><dd>Choose Add a task, enter the details, then select Add to my board.</dd></div>
         <div><dt>Move it forward</dt><dd>Drag notes between Planning, Tracking, and Shipped. On touch screens, hold a note first. You can also use its status menu.</dd></div>
-        <div><dt>Take a closer look</dt><dd>Double-click a note or select its sidebar link. With a keyboard, focus a note and press Enter.</dd></div>
+        <div><dt>Take a closer look</dt><dd>Double-click a note to view its details. With a keyboard, focus a note and press Enter.</dd></div>
         <div><dt>Edit or delete</dt><dd>Choose Edit and save your changes. Choose Delete to remove a task after confirming.</dd></div>
         <div><dt>Find a task</dt><dd>Search titles and descriptions, filter by category, or sort tasks. Work is yellow, Personal is blue, and Learning is pink.</dd></div>
-        <div><dt>Check your lists</dt><dd>Active tasks includes Planning and Tracking. Completed tasks includes Shipped. The sidebar counts update with your board.</dd></div>
+        <div><dt>Check your progress</dt><dd>Each column shows its task count. Finished tasks belong in Shipped.</dd></div>
         <div><dt>Change the theme</dt><dd>Choose Light or Dark from the Theme menu.</dd></div>
       </dl>
       <footer><button class="button button-primary" type="button" (click)="close()">Back to board</button></footer>

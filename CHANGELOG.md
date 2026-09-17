@@ -21,7 +21,7 @@
 - Refined the sticky-note styling with yellow Work, blue Personal, and pink Learning categories, plus light and dark themes.
 - Organized notes into Planning, Tracking, and Shipped columns with drag-and-drop status changes.
 - Added search, category filters, priorities, due dates, and sorting.
-- Added expanded task views and active/completed sidebar lists with live counts.
+- Added expanded task views and live task counts in each status column.
 - Connected the cloud configuration and published the app through Firebase Hosting.
 
 ## 2026-10-17: Final checks and finishing touches
@@ -29,6 +29,7 @@
 - Removed the Firebase connection status from the footer, keeping the centered quotation.
 
 - Added the short Help guide and footer quotation, and removed the redundant drag icon.
+- Arranged the app around a full-width board, with the logo, Help, and theme selector in the top bar.
 - Tidied spacing and wording across the board, forms, and dialogs.
 - Checked the final build, live CRUD, drag-and-drop, refresh persistence, private-board permissions, and responsive layouts.
 - Simplified the README to cover the app and launch instructions, and removed redundant documentation and archived screenshots.

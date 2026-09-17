@@ -85,7 +85,7 @@ export class TaskList {
 
   openTask(task: Task): void {
     // Psudo code //
-    // Put the note's ID in the URL, just like a sidebar link does.
+    // Put the note's ID in the URL so its expanded view can survive a refresh.
     // Find that note in the live task list and show its expanded view.
     void this.router.navigate(['/tasks'], { queryParams: { task: task.id } });
   }

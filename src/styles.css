@@ -4,7 +4,7 @@
   --canvas: #f4f7fc;
   --surface: #ffffff;
   --surface-raised: #f8faff;
-  --sidebar: #eef3fa;
+  --header-surface: #eef3fa;
   --ink: #142b47;
   --muted: #526781;
   --accent: #1263be;
@@ -44,7 +44,7 @@
   --canvas: #000000;
   --surface: #080d14;
   --surface-raised: #0d1520;
-  --sidebar: #04080e;
+  --header-surface: #04080e;
   --ink: #e5efff;
   --muted: #9aaec8;
   --accent: #78bbff;
@@ -108,7 +108,7 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
 
-/* One shared mapping keeps sidebar dots and board categories consistent. */
+/* Category dots use the same colors throughout the board. */
 .category-work { background: #b48a1d; }
 .category-personal { background: var(--accent); }
 .category-learning { background: #cd649b; }

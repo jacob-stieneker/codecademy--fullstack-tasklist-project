@@ -1,47 +1,20 @@
 <a class="skip-link" href="#main-content">Skip to content</a>
 <div class="app-shell">
-  <aside class="sidebar">
+  <header class="topbar">
     <div class="brand-block">
       <a class="brand" routerLink="/tasks" aria-label="Shipyard home"><app-icon name="ship" /><span>Shipyard</span></a>
       <p class="brand-slogan">Plan. Track. Ship.</p>
     </div>
-    <nav class="board-nav" aria-label="Main navigation">
-      <a class="nav-link" routerLink="/tasks"><app-icon name="board" /> My Board <span class="nav-count">{{ store.tasks().length }}</span></a>
-    </nav>
-    <nav class="task-nav" aria-label="Active tasks">
-      <h2>Active tasks <span>{{ activeTasks().length }}</span></h2>
-      @for (task of activeTasks(); track task.id) {
-        <a [routerLink]="['/tasks']" [queryParams]="{ task: task.id }" [attr.aria-label]="'Go to task: ' + task.title">
-          <span [class]="'task-dot category-' + task.category.toLowerCase()" aria-hidden="true"></span>
-          <span>{{ task.title }}</span>
-        </a>
-      } @empty {
-        <p class="sidebar-empty">No active tasks.</p>
-      }
-    </nav>
-    <nav class="task-nav" aria-label="Completed tasks">
-      <h2>Completed tasks <span>{{ completedTasks().length }}</span></h2>
-      @for (task of completedTasks(); track task.id) {
-        <a [routerLink]="['/tasks']" [queryParams]="{ task: task.id }" [attr.aria-label]="'Go to task: ' + task.title">
-          <span [class]="'task-dot category-' + task.category.toLowerCase()" aria-hidden="true"></span>
-          <span>{{ task.title }}</span>
-        </a>
-      } @empty {
-        <p class="sidebar-empty">No completed tasks.</p>
-      }
-    </nav>
-    <div class="sidebar-help"><button type="button" (click)="openHelp()"><app-icon name="help" /> Help</button></div>
-  </aside>
-  <div class="main-shell">
-    <header class="topbar">
+    <div class="topbar-actions">
       <span class="today"><app-icon name="calendar" /> {{ today | date:'EEE, MMM d' }}</span>
+      <button class="help-button" type="button" (click)="openHelp()"><app-icon name="help" /> Help</button>
       <label class="theme-select"><span>Theme</span><select aria-label="Theme" [ngModel]="appearance.theme()" (ngModelChange)="appearance.setTheme($event)"><option value="light">Light</option><option value="dark">Dark</option></select></label>
-    </header>
-    <main id="main-content" tabindex="-1"><router-outlet /></main>
-    <footer class="app-footer">
-      <p class="footer-message">"Good ideas deserve to leave the harbor." - Jacob Stieneker</p>
-    </footer>
-  </div>
+    </div>
+  </header>
+  <main id="main-content" tabindex="-1"><router-outlet /></main>
+  <footer class="app-footer">
+    <p class="footer-message">"Good ideas deserve to leave the harbor." - Jacob Stieneker</p>
+  </footer>
 </div>
 <div class="toast-region" role="status" aria-live="polite" aria-atomic="true">
   @if (notice.message()) { <div class="toast"><app-icon name="check" /> {{ notice.message() }} <button type="button" (click)="notice.message.set('')" aria-label="Dismiss notification"><app-icon name="close" /></button></div> }

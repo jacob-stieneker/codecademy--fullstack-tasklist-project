@@ -42,7 +42,7 @@ async function accessible(page: Page) {
   expect(result.violations.map(item => ({ id: item.id, nodes: item.nodes.map(node => node.failureSummary) }))).toEqual([]);
 }
 
-test('CRUD, all three statuses, category colors, sidebar links, filtering and persistence', async ({ page }) => {
+test('CRUD, all three statuses, category colors, task details, filtering and persistence', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/tasks');
@@ -62,24 +62,25 @@ test('CRUD, all three statuses, category colors, sidebar links, filtering and pe
   await expect(page.getByRole('article', { name: 'Draft the plan' })).toHaveClass(/note-butter/);
   await expect(page.getByRole('article', { name: 'Go for a walk' })).toHaveClass(/note-sky/);
   await expect(page.getByRole('article', { name: 'Learn signals' })).toHaveClass(/note-rose/);
-  const sidebar = page.getByRole('navigation', { name: 'Active tasks' });
-  await expect(sidebar.getByRole('link')).toHaveCount(3);
+  await expect(page.getByRole('region', { name: 'Planning column', exact: true }).getByRole('article')).toHaveCount(3);
   await status(page, 'Draft the plan', 'Tracking');
   await status(page, 'Go for a walk', 'Shipped');
-  await expect(sidebar.getByRole('link')).toHaveCount(2);
+  await expect(page.getByRole('region', { name: 'Shipped column', exact: true }).getByRole('article')).toHaveCount(1);
   await page.reload();
   await ready(page);
   await expect(page.getByRole('combobox', { name: 'Status: Draft the plan' })).toHaveValue('Tracking');
   await expect(page.getByRole('combobox', { name: 'Status: Go for a walk' })).toHaveValue('Shipped');
   await page.getByRole('button', { name: 'Personal', exact: true }).click();
   await expect(page.locator('.task-note')).toHaveCount(1);
-  await sidebar.getByRole('link', { name: 'Go to task: Draft the plan' }).click();
-  await expect(page.getByRole('dialog', { name: 'Draft the plan' })).toBeVisible();
+  const filteredNote = page.getByRole('article', { name: 'Go for a walk', exact: true });
+  await filteredNote.getByRole('heading').dblclick();
+  await expect(page.getByRole('dialog', { name: 'Go for a walk' })).toBeVisible();
   await page.getByRole('button', { name: 'Close task details' }).click();
-  // Opening details preserves filters; sidebar links can still open a hidden note.
+  // Opening details preserves filters and returns focus to the note.
   await expect(page.locator('.task-note')).toHaveCount(1);
-  await expect(sidebar.getByRole('link', { name: 'Go to task: Draft the plan' })).toBeFocused();
-  await sidebar.getByRole('link', { name: 'Go to task: Draft the plan' }).click();
+  await expect(filteredNote).toBeFocused();
+  await page.getByRole('button', { name: 'Everything', exact: true }).click();
+  await page.getByRole('article', { name: 'Draft the plan', exact: true }).getByRole('heading').dblclick();
   await page.getByRole('dialog').getByRole('link', { name: 'Edit task', exact: true }).click();
   await expect(page.getByLabel("What's on your mind?")).toHaveValue('Draft the plan');
   await expect(page.getByLabel('Status', { exact: true })).toHaveValue('Tracking');
@@ -103,7 +104,7 @@ test('CRUD, all three statuses, category colors, sidebar links, filtering and pe
   await page.getByRole('combobox', { name: 'Sort tasks' }).selectOption('priority');
   await expect(page.getByRole('region', { name: 'Tracking column', exact: true }).locator('.task-note').first()).toHaveAttribute('aria-label', 'Ship the plan');
   await status(page, 'Go for a walk', 'Planning');
-  await expect(sidebar.getByRole('link')).toHaveCount(3);
+  await expect(page.getByRole('region', { name: 'Planning column', exact: true }).getByRole('article')).toHaveCount(2);
   await page.getByRole('button', { name: 'Delete Go for a walk', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Keep task' })).toBeFocused();
   await page.keyboard.press('Escape');
@@ -140,6 +141,8 @@ for (const theme of ['light', 'dark'] as const) {
     for (const width of [1440, 1024, 768, 390, 320]) {
       await page.setViewportSize({ width, height: 900 });
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      await expect(page.getByRole('banner').getByRole('link', { name: 'Shipyard home' })).toBeVisible();
+      await expect(page.getByRole('banner').getByRole('button', { name: 'Help', exact: true })).toBeVisible();
     }
     await page.setViewportSize({ width: 390, height: 844 });
     await page.getByRole('button', { name: `Delete ${'A'.repeat(100)}`, exact: true }).click();
@@ -385,7 +388,7 @@ test('dragging changes column and Firestore status, preserves color, and syncs w
   await assertStored('Tracking');
   await dragNote(page, 'Move this note', 'Shipped');
   await expect(noteIn('Shipped')).toHaveClass(/note-sky/);
-  await expect(page.getByRole('navigation', { name: 'Active tasks' }).getByRole('link', { name: 'Go to task: Move this note' })).toHaveCount(0);
+  await expect(page.getByRole('region', { name: 'Shipped column', exact: true }).getByRole('article', { name: 'Move this note' })).toBeVisible();
   await assertStored('Shipped');
   // Dropping back in the same column is a no-op, so it must not rewrite the document.
   const before = await (await request.get(documentUrl, { headers: { Authorization: 'Bearer owner' } })).json();
@@ -473,18 +476,17 @@ test('a rejected drop keeps the note in its source column and allows a retry', a
 });
 
 for (const theme of ['light', 'dark'] as const) {
-  test(`${theme}: expanded notes, sidebar counts, keyboard access and live updates`, async ({ page, request }, info) => {
+  test(`${theme}: expanded notes, column counts, keyboard access and live updates`, async ({ page, request }, info) => {
     await page.emulateMedia({ colorScheme: theme });
     const uid = await openPrivateBoard(page);
-    const active = page.getByRole('navigation', { name: 'Active tasks', exact: true });
-    const completed = page.getByRole('navigation', { name: 'Completed tasks', exact: true });
-    await expect(active.getByRole('heading')).toHaveText('Active tasks 0');
-    await expect(completed.getByRole('heading')).toHaveText('Completed tasks 0');
+    const count = (status: string) => page.getByRole('region', { name: status + ' column', exact: true }).locator('.column-heading > span');
+    await expect(count('Planning')).toHaveText('0');
+    await expect(count('Shipped')).toHaveText('0');
     await createTask(page, 'Explore the coast', 'Personal', 'Bring a notebook.\nTake the scenic path.');
     await createTask(page, 'Finish the sketch', 'Learning');
     await status(page, 'Finish the sketch', 'Shipped');
-    await expect(active.getByRole('heading')).toHaveText('Active tasks 1');
-    await expect(completed.getByRole('heading')).toHaveText('Completed tasks 1');
+    await expect(count('Planning')).toHaveText('1');
+    await expect(count('Shipped')).toHaveText('1');
     await dismiss(page);
     const note = page.getByRole('article', { name: 'Explore the coast', exact: true });
     const noteId = (await note.getAttribute('id'))!.replace('task-', '');
@@ -501,14 +503,15 @@ for (const theme of ['light', 'dark'] as const) {
     await page.keyboard.press('Enter');
     await expect(detail).toBeVisible();
     await page.getByRole('button', { name: 'Close task details' }).click();
-    await completed.getByRole('link', { name: 'Go to task: Finish the sketch' }).click();
+    await page.getByRole('article', { name: 'Finish the sketch', exact: true }).getByRole('heading').dblclick();
     await expect(page.getByRole('dialog')).toContainText('Shipped');
     await page.getByRole('dialog').getByRole('link', { name: 'Edit task', exact: true }).click();
     await page.getByLabel('Status', { exact: true }).selectOption('Tracking');
     await page.getByRole('button', { name: 'Save changes', exact: true }).click();
-    await expect(active.getByRole('heading')).toHaveText('Active tasks 2');
-    await expect(completed.getByRole('heading')).toHaveText('Completed tasks 0');
-    await active.getByRole('link', { name: 'Go to task: Explore the coast' }).click();
+    await expect(count('Planning')).toHaveText('1');
+    await expect(count('Tracking')).toHaveText('1');
+    await expect(count('Shipped')).toHaveText('0');
+    await note.getByRole('heading').dblclick();
     // Simulate a second client changing this test user's note while details are open.
     const url = `${emulatorDocuments}/users/${uid}/tasks/${noteId}`;
     const update = await request.patch(url + '?updateMask.fieldPaths=description&updateMask.fieldPaths=status&updateMask.fieldPaths=completed', {
@@ -530,8 +533,8 @@ for (const theme of ['light', 'dark'] as const) {
     expect((await request.delete(url, { headers: { Authorization: 'Bearer owner' } })).ok()).toBe(true);
     await expect(page.getByRole('dialog', { name: 'Task unavailable' })).toBeVisible();
     await page.keyboard.press('Escape');
-    await expect(active.getByRole('heading')).toHaveText('Active tasks 1');
-    await expect(completed.getByRole('heading')).toHaveText('Completed tasks 0');
+    await expect(count('Tracking')).toHaveText('1');
+    await expect(count('Shipped')).toHaveText('0');
     await expect(page.getByRole('heading', { name: 'Task Board', exact: true })).toBeVisible();
   });
 }
