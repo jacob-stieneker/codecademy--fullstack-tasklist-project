@@ -21,10 +21,7 @@
 main { padding: 20px 36px 32px; flex: 1; min-width: 0; }
 main:focus { outline: none; }
 .app-footer { padding: 18px 36px 24px; color: var(--muted); font-size: .66rem; }
-.app-footer > span { display: flex; align-items: center; gap: 7px; }
-.footer-message { margin: 14px 0 0; text-align: center; font-size: .75rem; line-height: 1.6; }
-.connection-dot { width: 6px; height: 6px; background: var(--warning); border-radius: 50%; }
-.connection-dot.connected { background: var(--success); }
+.footer-message { margin: 0; text-align: center; font-size: .75rem; line-height: 1.6; }
 .toast-region { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 50; width: max-content; max-width: calc(100vw - 32px); }
 .toast { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: var(--accent); color: var(--on-accent); border-radius: 4px; font-size: .85rem; }
 .toast button { border: 0; padding: 5px; min-width: 28px; min-height: 28px; background: transparent; color: inherit; display: flex; cursor: pointer; }

@@ -39,7 +39,6 @@
     </header>
     <main id="main-content" tabindex="-1"><router-outlet /></main>
     <footer class="app-footer">
-      <span><span class="connection-dot" [class.connected]="store.connected()"></span>{{ store.connected() ? (localMode ? 'Connected to local Firebase' : 'Connected to Firebase') : 'Connecting to Firebase' }}</span>
       <p class="footer-message">"Good ideas deserve to leave the harbor." - Jacob Stieneker</p>
     </footer>
   </div>

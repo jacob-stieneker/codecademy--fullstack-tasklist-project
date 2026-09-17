@@ -7,7 +7,6 @@ import { Icon } from './components/icon';
 import { TaskService } from './services/task.service';
 import { NoticeService } from './services/notice.service';
 import { ThemeService } from './services/theme.service';
-import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +22,6 @@ export class App {
   readonly notice = inject(NoticeService);
   readonly appearance = inject(ThemeService);
   readonly today = new Date();
-  readonly localMode = environment.useEmulators;
   readonly activeTasks = computed(() => this.store.tasks()
     .filter(task => task.status !== 'Shipped')
     .sort((a, b) => (a.createdAt?.toMillis() ?? 0) - (b.createdAt?.toMillis() ?? 0)));

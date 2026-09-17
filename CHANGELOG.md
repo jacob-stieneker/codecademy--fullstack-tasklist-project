@@ -26,6 +26,8 @@
 
 ## 2026-10-17: Final checks and finishing touches
 
+- Removed the Firebase connection status from the footer, keeping the centered quotation.
+
 - Added the short Help guide and footer quotation, and removed the redundant drag icon.
 - Tidied spacing and wording across the board, forms, and dialogs.
 - Checked the final build, live CRUD, drag-and-drop, refresh persistence, private-board permissions, and responsive layouts.

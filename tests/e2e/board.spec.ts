@@ -12,7 +12,13 @@ async function openPrivateBoard(page: Page): Promise<string> {
 }
 
 async function ready(page: Page) {
-  await expect(page.getByText('Connected to local Firebase', { exact: true })).toBeVisible();
+  // Wait for usable page content instead of an implementation-detail footer label.
+  const save = page.getByRole('button', { name: /^(Add to my board|Save changes)$/ });
+  const board = page.getByRole('region', { name: 'Status columns', exact: true });
+  const missing = page.getByRole('heading', { name: 'This note is no longer here.', exact: true });
+  await expect(board.or(save).or(missing)).toBeVisible();
+  if (await save.count()) await expect(save).toBeEnabled();
+  await expect(page.getByRole('alert')).toHaveCount(0);
 }
 async function createTask(page: Page, title: string, category = 'Work', description = '') {
   await page.getByRole('link', { name: 'Add a task', exact: true }).click();
