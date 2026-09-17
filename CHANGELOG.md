@@ -1,29 +1,32 @@
 # Changelog
 
-## Unreleased
+## 2026-10-12: Project setup and task creation
 
-- Simplified the README and removed redundant documentation and archived screenshots.
-- Published Shipyard on Firebase Hosting with anonymous Authentication and private Firestore boards.
-- Added expanded task views, active/completed sidebar counts, and Help.
-- Added the footer quotation and removed the redundant drag icon.
+- Set up the Angular project, page routes, task model, and a service for database operations.
+- Connected AngularFire to local Firebase Authentication and Firestore emulators.
+- Built the new-task form with title validation and an optional description.
+- Connected form submissions to Firestore and checked that new tasks were saved with generated IDs.
 
-## 1.3.0 - 2026-09-12
+## 2026-10-15: Complete the CRUD flow
 
-- Added Planning, Tracking, and Shipped columns with drag-and-drop status updates.
-- Kept search, category filters, sorting, and keyboard-accessible status controls.
+- Displayed saved tasks on the board with live Firestore updates and an empty state.
+- Added deletion by task ID with confirmation before removing a note.
+- Built the edit flow with a prefilled form that saves changes to the selected task.
+- Checked that creating, editing, and deleting tasks persisted after refresh and left other tasks unchanged.
+- Added the initial sticky-note CSS, responsive layout, and private-board access rules.
 
-## 1.2.1 - 2026-09-12
+## 2026-10-16: Branding and board features
 
-- Simplified notes, forms, navigation, and dialogs while preserving the color palette.
+- Named the app Shipyard and introduced the ship icon, "Plan. Track. Ship." slogan, and sea-blue/navy palette.
+- Refined the sticky-note styling with yellow Work, blue Personal, and pink Learning categories, plus light and dark themes.
+- Organized notes into Planning, Tracking, and Shipped columns with drag-and-drop status changes.
+- Added search, category filters, priorities, due dates, and sorting.
+- Added expanded task views and active/completed sidebar lists with live counts.
+- Connected the cloud configuration and published the app through Firebase Hosting.
 
-## 1.2.0 - 2026-09-12
+## 2026-10-17: Final checks and finishing touches
 
-- Added task statuses, category-based colors, active-task links, and a theme dropdown.
-
-## 1.1.0 - 2026-09-12
-
-- Introduced the Shipyard name, ship logo, blue palette, and light/dark themes.
-
-## 1.0.0 - 2026-09-12
-
-- Created the Angular and Firebase task board with CRUD, private boards, filtering, and responsive styling.
+- Added the short Help guide and footer quotation, and removed the redundant drag icon.
+- Tidied spacing and wording across the board, forms, and dialogs.
+- Checked the final build, live CRUD, drag-and-drop, refresh persistence, private-board permissions, and responsive layouts.
+- Simplified the README to cover the app and launch instructions, and removed redundant documentation and archived screenshots.
